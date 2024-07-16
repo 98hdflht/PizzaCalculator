@@ -8,20 +8,30 @@ import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.CheckBox;
 
+import java.text.NumberFormat;
+
 public class Main extends Application {
 
     private ToggleGroup sizeToggle = new ToggleGroup();
-    private CheckBox toppingBox = new CheckBox();
     private TextField priceField = new TextField();
     private double total = 0.0;
+    private final double meat = 1.49;
+    private final double veg = .99;
+    private CheckBox sausage = new CheckBox("Sausage");
+    private CheckBox pepperoni = new CheckBox("Pepperoni");
+    private CheckBox salami = new CheckBox("Salami");
+    private CheckBox olives = new CheckBox("Olives");
+    private CheckBox mushrooms = new CheckBox("Mushrooms");
+    private CheckBox anchovies = new CheckBox("Anchovies");
 
     @Override
     public void start(Stage stage) {
         stage.setTitle("Pizza Price Calculator");
         VBox vbox = new VBox(10);
 
-        HBox sizeBox = new HBox(10);
+        VBox sizeCont = new VBox(5);
         Label sizeLabel = new Label("Size");
+        HBox sizeBox = new HBox(10);
         RadioButton smallButton = new RadioButton("Small");
         smallButton.setToggleGroup(sizeToggle);
         smallButton.setSelected(true);
@@ -29,27 +39,28 @@ public class Main extends Application {
         mediumButton.setToggleGroup(sizeToggle);
         RadioButton largeButton = new RadioButton("Large");
         largeButton.setToggleGroup(sizeToggle);
-        sizeBox.getChildren().add(sizeLabel);
         sizeBox.getChildren().add(smallButton);
         sizeBox.getChildren().add(mediumButton);
         sizeBox.getChildren().add(largeButton);
-        vbox.getChildren().add(sizeBox);
+        sizeCont.getChildren().add(sizeLabel);
+        sizeCont.getChildren().add(sizeBox);
+        vbox.getChildren().add(sizeCont);
 
-        HBox toppingBox = new HBox(10);
+        GridPane toppingGrid = new GridPane();
+        toppingGrid.setHgap(10);
+        toppingGrid.setVgap(10);
+
         Label toppingLabel = new Label("Toppings");
-        CheckBox sausage = new CheckBox("Sausage");
-        CheckBox pepperoni = new CheckBox("Pepperoni");
-        CheckBox salami = new CheckBox("Salami");
-        CheckBox olives = new CheckBox("Olives");
-        CheckBox mushrooms = new CheckBox("Mushrooms");
-        CheckBox anchovies = new CheckBox("Anchovies");
-        toppingBox.getChildren().add(toppingLabel);
-        toppingBox.getChildren().add(sausage);
-        toppingBox.getChildren().add(pepperoni);
-        toppingBox.getChildren().add(salami);
-        toppingBox.getChildren().add(olives);
-        toppingBox.getChildren().add(mushrooms);
-        toppingBox.getChildren().add(anchovies);
+        toppingGrid.add(toppingLabel, 0, 0, 2, 1);
+
+        toppingGrid.add(sausage, 0, 1);
+        toppingGrid.add(pepperoni, 0, 2);
+        toppingGrid.add(salami, 0, 3);
+        toppingGrid.add(olives, 1, 1);
+        toppingGrid.add(mushrooms, 1, 2);
+        toppingGrid.add(anchovies, 1, 3);
+        vbox.getChildren().add(toppingGrid);
+
 
         HBox priceBox = new HBox(10);
         Label priceLabel = new Label("Price: ");
@@ -70,17 +81,37 @@ public class Main extends Application {
 
     public void calculateButtonClicked() {
         RadioButton selectedSize = (RadioButton) sizeToggle.getSelectedToggle();
-        if (selectedSize.equals("Small")) {
+        total = 0.0;
+        String size = selectedSize.getText();
+        if (size.equals("Small")) {
             total += 6.99;
-        } else if (selectedSize.equals("Medium")) {
+        } else if (size.equals("Medium")) {
             total += 8.99;
         } else {
             total += 10.99;
         }
 
-        if (toppingBox.isSelected()) {
-
+        if (sausage.isSelected()) {
+            total += meat;
         }
+        if (pepperoni.isSelected()) {
+            total += meat;
+        }
+        if (salami.isSelected()) {
+            total += meat;
+        }
+        if (olives.isSelected()) {
+            total += veg;
+        }
+        if (mushrooms.isSelected()) {
+            total += veg;
+        }
+        if ( anchovies.isSelected()) {
+            total += veg;
+        }
+
+        NumberFormat currency = NumberFormat.getCurrencyInstance();
+        priceField.setText(currency.format(total));
     }
 
     public static void main(String[] args) {
