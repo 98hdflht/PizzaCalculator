@@ -1,3 +1,7 @@
+// Quincy Yarbrough
+// 7/19/2024
+// app to calculate the price of a pizza
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -7,7 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.CheckBox;
-
 import java.text.NumberFormat;
 
 public class Main extends Application {
